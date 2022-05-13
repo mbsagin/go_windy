@@ -1,16 +1,15 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
-	"net/http"
 	"os"
 	"time"
 
 	"github.com/joho/godotenv"
+
+	"go_windy/request"
 )
 
 var apiKey string
@@ -69,41 +68,13 @@ func getSurfaceTemperatures(lat float64, lon float64, forecastModel string) surf
 		log.Fatal(err)
 	}
 
-	responseBody := makeRequest(apiUrl, modelBytes)
+	responseBody := request.MakePostRequest(apiUrl, modelBytes)
 
 	if err := json.Unmarshal(responseBody, &tempModel); err != nil {
 		log.Fatal(err)
 	}
 
 	return tempModel
-}
-
-func makeRequest(url string, requestBody []byte) []byte {
-	request, err := http.NewRequest("POST", url, bytes.NewBuffer(requestBody))
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-    request.Header.Set("Content-Type", "application/json")
-
-    client := &http.Client{}
-    
-	response, err := client.Do(request)
-
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    defer response.Body.Close()
-
-	responseBody, err := io.ReadAll(response.Body)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return responseBody;
 }
 
 func timestampToUnixTimeUTC(timestamp int64) time.Time {
