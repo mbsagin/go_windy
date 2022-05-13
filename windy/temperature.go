@@ -3,12 +3,11 @@ package windy
 import (
 	"encoding/json"
 	"log"
-
+	
+	"github.com/joho/godotenv"
+	
 	"go_windy/request"
 	"go_windy/utils"
-
-	"github.com/joho/godotenv"
-
 	"go_windy/windy/models"
 )
 
