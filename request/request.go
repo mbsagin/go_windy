@@ -7,10 +7,12 @@ import (
 	"net/http"
 )
 
+// Makes HTTP GET request with requestBody 
 func MakeGetRequest(url string, requestBody []byte) []byte {
 	return makeRequest(url, requestBody, "GET")
 }
 
+// Makes HTTP POST request with requestBody 
 func MakePostRequest(url string, requestBody []byte) []byte {
 	return makeRequest(url, requestBody, "POST")
 }

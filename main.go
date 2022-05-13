@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 	"time"
 
 	"github.com/joho/godotenv"
 
 	"go_windy/request"
+	"go_windy/utils"
 )
 
 var apiKey string
@@ -35,8 +35,8 @@ func init() {
 		log.Fatalf("Env could not found: %s", err)
 	}
 
-	apiKey = getEnvVariable("API_KEY")
-	apiUrl = getEnvVariable("API_URL")
+	apiKey = utils.GetEnvVariable("API_KEY")
+	apiUrl = utils.GetEnvVariable("API_URL")
 }
 
 func main() {
@@ -47,7 +47,7 @@ func main() {
 	surfaceTemps := getSurfaceTemperatures(lat, lon, forecastModel)
 
 	for i, ts := range surfaceTemps.Timestamps {
-		fmt.Printf("[%s] %.1f Celcius\n", timestampToUnixTimeUTC(ts).Format(time.RFC822), kelvinToCelcius(surfaceTemps.Temperatures[i]))
+		fmt.Printf("[%s] %.1f Celcius\n", utils.TimestampToUnixTimeUTC(ts).Format(time.RFC822), utils.KelvinToCelsius(surfaceTemps.Temperatures[i]))
 	}
 }
 
@@ -75,23 +75,4 @@ func getSurfaceTemperatures(lat float64, lon float64, forecastModel string) surf
 	}
 
 	return tempModel
-}
-
-func timestampToUnixTimeUTC(timestamp int64) time.Time {
-	return time.Unix(timestamp / 1000, 0)
-}
-
-func kelvinToCelcius(kelvin float64) float64 {
-	return kelvin - 273.15
-}
-
-func getEnvVariable(key string) string {
-	envVariable, ok := os.LookupEnv(key)
-
-	if !ok {
-		log.Fatalf("Env key could not found: %s", key)
-		return key
-	}
-
-	return envVariable
 }
