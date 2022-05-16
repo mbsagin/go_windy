@@ -13,9 +13,9 @@ func main() {
 	lon := 28.54
 	forecastModel := "iconEu"
 
-	surfaceTemps := windy.GetSurfaceTemperatures(lat, lon, forecastModel)
+	surfaceTemp := windy.GetSurfaceTemperatures(lat, lon, forecastModel)
 
-	for i, ts := range surfaceTemps.Timestamps {
-		fmt.Printf("[%s] %.1f Celcius\n", utils.TimestampToUnixTimeUTC(ts).Format(time.RFC822), utils.KelvinToCelsius(surfaceTemps.Temperatures[i]))
+	for i, ts := range surfaceTemp.Timestamps {
+		fmt.Printf("[%s] %.1f Celsius\n", utils.TimestampToUnixTimeUTC(ts).Format(time.RFC822), utils.KelvinToCelsius(surfaceTemp.Temperatures[i]))
 	}
 }
